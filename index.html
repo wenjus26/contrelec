@@ -837,18 +837,21 @@
         </div>
 
         <div class="alert">
-          <strong>Procédure de transmission :</strong><br>
-          1. Cliquez sur <strong>Télécharger le dossier complet (JSON + Vocaux)</strong> pour générer un fichier unique contenant toutes vos réponses structurées et vos enregistrements audio.<br>
-          2. Transmettez ce fichier par <strong>WhatsApp</strong> ou <strong>E-mail</strong> à l'équipe en charge de la mission de digitalisation CONTRELEC.
+          <strong>Finalisation et envoi direct :</strong><br>
+          Cliquez sur l'un des boutons ci-dessous pour <strong>compléter et transmettre</strong> votre dossier directement par <strong>WhatsApp (+229 01 90 35 83 52)</strong> ou par <strong>E-mail (rw.mis.services@gmail.com)</strong>. Le fichier complet (incluant vos notes vocales) est automatiquement généré et téléchargé afin de pouvoir être joint en pièce jointe si vous avez enregistré des vocaux.
         </div>
 
         <div class="card card-cadrage">
-          <h3>Export et partage</h3>
+          <h3>Terminer et transmettre le dossier</h3>
           <div class="export-actions">
-            <button type="button" id="btn-export-json" class="btn btn-primary">Télécharger le dossier complet (JSON + Vocaux)</button>
-            <button type="button" id="btn-export-md" class="btn btn-accent">Télécharger la fiche de cadrage (.md)</button>
-            <button type="button" id="btn-copy-wa" class="btn btn-outline">Copier la synthèse texte</button>
-            <button type="button" id="btn-print" class="btn btn-outline">Imprimer / Enregistrer en PDF</button>
+            <button type="button" id="btn-complete-wa" class="btn btn-primary">Terminer &amp; Envoyer par WhatsApp (+229 01 90 35 83 52)</button>
+            <button type="button" id="btn-complete-email" class="btn btn-accent">Terminer &amp; Envoyer par E-mail (rw.mis.services@gmail.com)</button>
+          </div>
+          <div class="export-actions" style="margin-top:0.65rem;padding-top:0.65rem;border-top:1px solid var(--border);">
+            <button type="button" id="btn-export-json" class="btn btn-outline btn-sm">Télécharger le dossier (.json + Vocaux)</button>
+            <button type="button" id="btn-export-md" class="btn btn-outline btn-sm">Télécharger la fiche (.md)</button>
+            <button type="button" id="btn-copy-wa" class="btn btn-outline btn-sm">Copier le texte</button>
+            <button type="button" id="btn-print" class="btn btn-outline btn-sm">Imprimer / PDF</button>
             <button type="button" id="btn-reset-all" class="btn btn-danger btn-sm" style="margin-left:auto;">Réinitialiser</button>
           </div>
           <p id="export-feedback" style="font-size:0.86rem;color:var(--green);font-weight:600;margin:0.75rem 0 0;"></p>
@@ -1267,7 +1270,59 @@
         setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
       }
 
+      const TARGET_WHATSAPP = "2290190358352";
+      const TARGET_EMAIL = "rw.mis.services@gmail.com";
       const feedback = document.getElementById("export-feedback");
+
+      function buildCompactMessage(p) {
+        const lines = [
+          "DOSSIER DE CADRAGE CONTRELEC BENIN",
+          "Repondant : " + (p.answers.id_nom || "Non precise") + " (" + (p.answers.id_fonction || "-") + ")",
+          "Pole : " + (p.cadrage.pole || "-"),
+          "Tel : " + (p.answers.id_tel || "-") + " | Email : " + (p.answers.id_email || "-"),
+          "Maturite : " + (p.cadrage.maturite || "-"),
+          "Priorite : " + (p.cadrage.priorite || "-"),
+          "Notes vocales jointes (.json) : " + p.meta.total_voice_notes,
+          ""
+        ];
+        if (p.cadrage.dependances_risques.length) {
+          lines.push("Dependances : " + p.cadrage.dependances_risques.join(", "));
+        }
+        if (p.cadrage.pieces_disponibles.length) {
+          lines.push("Pieces disponibles : " + p.cadrage.pieces_disponibles.join(", "));
+        }
+        lines.push("");
+        p.labeled_answers.forEach(function (row) {
+          if (row.value && !row.field.startsWith("id_") && !row.field.startsWith("cad_")) {
+            lines.push("- " + row.label + " : " + row.value);
+          }
+        });
+        return lines.join("\n");
+      }
+
+      document.getElementById("btn-complete-wa").addEventListener("click", function () {
+        const payload = collectPayload();
+        const slug = (payload.answers.id_nom || "repondant").toLowerCase().replace(/[^a-z0-9]+/g, "_");
+        const filename = "CONTRELEC_Cadrage_" + slug + "_" + new Date().toISOString().slice(0, 10) + ".json";
+        downloadFile(filename, JSON.stringify(payload, null, 2), "application/json;charset=utf-8");
+
+        const text = buildCompactMessage(payload).slice(0, 3200);
+        const waUrl = "https://wa.me/" + TARGET_WHATSAPP + "?text=" + encodeURIComponent(text);
+        window.open(waUrl, "_blank", "noopener");
+        feedback.textContent = "Fichier " + filename + " téléchargé et WhatsApp ouvert vers +229 01 90 35 83 52. Joignez le fichier .json si vous avez enregistré des notes vocales.";
+      });
+
+      document.getElementById("btn-complete-email").addEventListener("click", function () {
+        const payload = collectPayload();
+        const slug = (payload.answers.id_nom || "repondant").toLowerCase().replace(/[^a-z0-9]+/g, "_");
+        const filename = "CONTRELEC_Cadrage_" + slug + "_" + new Date().toISOString().slice(0, 10) + ".json";
+        downloadFile(filename, JSON.stringify(payload, null, 2), "application/json;charset=utf-8");
+
+        const subject = "[CONTRELEC Cadrage] " + (payload.cadrage.pole || "Audit") + " — " + (payload.answers.id_nom || "Répondant");
+        const body = buildCompactMessage(payload).slice(0, 1800) + "\n\n(Veuillez joindre le fichier téléchargé : " + filename + ")";
+        window.location.href = "mailto:" + TARGET_EMAIL + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+        feedback.textContent = "Fichier " + filename + " téléchargé et messagerie ouverte vers " + TARGET_EMAIL + ". Pensez à joindre le fichier téléchargé.";
+      });
 
       document.getElementById("btn-export-json").addEventListener("click", function () {
         const payload = collectPayload();
