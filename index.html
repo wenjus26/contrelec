@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CONTRELEC Bénin — Formulaire de Cadrage &amp; État des Lieux Digitalisation</title>
+  <style>
+    :root {
+      --navy: #003060;
+      --navy-deep: #001f3f;
+      --accent: #0d6a7c;
+      --green: #097e47;
+      --yellow: #f9d016;
+      --red: #de2126;
+      --bg: #ffffff;
+      --subtle: #f8f9fa;
+      --text: #111827;
+      --muted: #4b5563;
+      --border: rgba(0, 48, 96, 0.16);
+      --border-strong: rgba(0, 48, 96, 0.28);
+      --radius: 6px;
+      --shadow: 0 4px 16px rgba(0, 48, 96, 0.05);
+      --font-h: "Segoe UI", system-ui, -apple-system, sans-serif;
+      --font-b: "Segoe UI", system-ui, -apple-system, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #ffffff;
+      color: var(--text);
+      font-family: var(--font-b);
+      font-size: 15.5px;
+      line-height: 1.6;
+      overflow-x: clip;
+    }
+
+    .tricolor {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      height: 4px;
+      width: 100%;
+    }
+    .tricolor .g { background: var(--green); }
+    .tricolor .y { background: var(--yellow); }
+    .tricolor .r { background: var(--red); }
+
+    header {
+      background: #ffffff;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 0 1.15rem;
+    }
+
+    .header-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 0.9rem 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand-title {
+      font-family: var(--font-h);
+      font-weight: 800;
+      font-size: 1.08rem;
+      color: var(--navy);
+      line-height: 1.2;
+    }
+
+    .brand-sub {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .save-pill {
+      font-size: 0.77rem;
+      font-weight: 600;
+      color: var(--navy);
+      border: 1px solid var(--border-strong);
+      border-left: 3px solid var(--green);
+      padding: 0.25rem 0.65rem;
+      border-radius: 4px;
+      background: #ffffff;
+    }
+
+    /* Barre de progression & étapes */
+    .stepper-wrap {
+      background: var(--subtle);
+      border-bottom: 1px solid var(--border);
+      padding: 0.95rem 0;
+    }
+
+    .progress-track {
+      height: 4px;
+      background: #e5e7eb;
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 0.85rem;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--navy);
+      width: 14%;
+      transition: width 0.25s ease;
+    }
+
+    .steps-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .step-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.38rem 0.72rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      border: 1px solid var(--border-strong);
+      border-radius: 4px;
+      background: #ffffff;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .step-pill.active {
+      background: var(--navy);
+      border-color: var(--navy);
+      color: #ffffff;
+    }
+
+    .step-pill.done {
+      border-left: 3px solid var(--green);
+    }
+
+    main {
+      padding: 1.75rem 0 3.5rem;
+    }
+
+    .step-panel { display: none; }
+    .step-panel.active { display: block; }
+
+    .step-header {
+      margin-bottom: 1.35rem;
+      padding-bottom: 0.85rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .step-kicker {
+      display: inline-block;
+      font-size: 0.73rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 0.25rem;
+    }
+
+    h1, h2, h3 {
+      font-family: var(--font-h);
+      color: var(--navy);
+      margin: 0 0 0.4rem;
+      line-height: 1.25;
+    }
+
+    h2 { font-size: 1.4rem; }
+    h3 { font-size: 1rem; }
+
+    .card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      margin-bottom: 1.15rem;
+      box-shadow: var(--shadow);
+    }
+
+    .card-cadrage {
+      border-top: 2.5px solid var(--navy);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.85rem;
+    }
+
+    @media (min-width: 720px) {
+      .grid-2 { grid-template-columns: repeat(2, 1fr); }
+      .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .form-group { margin-bottom: 1rem; }
+
+    label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.92rem;
+      color: var(--navy);
+      margin-bottom: 0.35rem;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="date"],
+    input[type="number"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 0.6rem 0.82rem;
+      border: 1px solid var(--border-strong);
+      border-radius: 5px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      color: var(--text);
+      background: #ffffff;
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: 2px solid var(--navy);
+      outline-offset: 1px;
+    }
+
+    /* Cases à cocher structurées de cadrage */
+    .check-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.55rem;
+      margin-top: 0.4rem;
+    }
+
+    @media (min-width: 680px) {
+      .check-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.55rem;
+      padding: 0.5rem 0.65rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: #ffffff;
+      font-weight: 500;
+      font-size: 0.87rem;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .check-item input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      margin-top: 0.18rem;
+      flex-shrink: 0;
+      accent-color: var(--navy);
+    }
+
+    /* Barre outils vocaux sobre (icônes SVG minimalistes, zéro émoticône) */
+    .voice-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.55rem;
+      padding-top: 0.55rem;
+      border-top: 1px dashed var(--border);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.42rem;
+      padding: 0.58rem 1.08rem;
+      border-radius: 5px;
+      border: 1px solid transparent;
+      font-family: inherit;
+      font-size: 0.89rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .btn-primary { background: var(--navy); color: #ffffff; }
+    .btn-primary:hover { background: var(--navy-deep); }
+
+    .btn-accent { background: var(--accent); color: #ffffff; }
+    .btn-accent:hover { background: #085160; }
+
+    .btn-outline { background: #ffffff; border-color: var(--border-strong); color: var(--navy); }
+    .btn-outline:hover { background: var(--subtle); border-color: var(--navy); }
+
+    .btn-danger { background: var(--red); color: #ffffff; }
+
+    .btn-sm { padding: 0.36rem 0.72rem; font-size: 0.8rem; }
+
+    .btn-rec.recording {
+      background: var(--red);
+      border-color: var(--red);
+      color: #ffffff;
+    }
+
+    .rec-timer {
+      font-family: Consolas, monospace;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--red);
+      display: none;
+    }
+
+    .rec-timer.active { display: inline-block; }
+
+    .audio-list {
+      width: 100%;
+      margin-top: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .audio-item {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0.5rem 0.65rem;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      background: var(--subtle);
+    }
+
+    .audio-item audio {
+      height: 34px;
+      max-width: 100%;
+      flex: 1 1 220px;
+    }
+
+    .audio-meta {
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .step-footer {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+      padding-top: 1.15rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .alert {
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--navy);
+      padding: 0.85rem 1rem;
+      border-radius: 5px;
+      background: #ffffff;
+      font-size: 0.89rem;
+      margin-bottom: 1.15rem;
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 0.85rem;
+      margin-bottom: 1.15rem;
+    }
+
+    .kpi-box {
+      border: 1px solid var(--border);
+      border-top: 2.5px solid var(--navy);
+      border-radius: 5px;
+      padding: 0.85rem;
+      background: #ffffff;
+    }
+
+    .kpi-label { font-size: 0.76rem; color: var(--muted); text-transform: uppercase; font-weight: 700; }
+    .kpi-val { font-size: 1.15rem; font-weight: 800; color: var(--navy); margin-top: 0.25rem; }
+
+    .summary-block {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1rem 1.15rem;
+      margin-bottom: 0.95rem;
+      background: #ffffff;
+    }
+
+    .summary-item {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .summary-item:last-child { border-bottom: none; }
+
+    .summary-q { font-weight: 700; font-size: 0.85rem; color: var(--navy); }
+    .summary-a { font-size: 0.91rem; white-space: pre-wrap; margin-top: 0.2rem; }
+
+    .export-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 0.9rem;
+    }
+
+    @media (max-width: 640px) {
+      .step-footer .btn, .export-actions .btn { width: 100%; }
+    }
+
+    @media print {
+      header, .stepper-wrap, .voice-toolbar, .step-footer, .export-actions { display: none !important; }
+      .step-panel { display: block !important; }
+      .card { box-shadow: none; break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <div class="tricolor" aria-hidden="true">
+    <div class="g"></div>
+    <div class="y"></div>
+    <div class="r"></div>
+  </div>
+
+  <header>
+    <div class="container header-row">
+      <div class="brand">
+        <svg viewBox="0 0 30 20" width="28" height="19" style="border:1px solid rgba(0,48,96,0.18);border-radius:2px;flex-shrink:0;" aria-label="Drapeau de la République du Bénin">
+          <rect x="0" y="0" width="12" height="20" fill="#097e47"/>
+          <rect x="12" y="0" width="18" height="10" fill="#f9d016"/>
+          <rect x="12" y="10" width="18" height="10" fill="#de2126"/>
+        </svg>
+        <div>
+          <div class="brand-title">CONTRELEC Bénin &mdash; Dossier de Cadrage &amp; État des Lieux Digitalisation</div>
+          <div class="brand-sub">Agence de Contrôle des Installations électriques et de l'Efficacité énergétique &bull; République du Bénin</div>
+        </div>
+      </div>
+      <span id="save-status" class="save-pill">Sauvegarde automatique active</span>
+    </div>
+  </header>
+
+  <div class="stepper-wrap">
+    <div class="container">
+      <div class="progress-track" aria-hidden="true">
+        <div id="progress-fill" class="progress-fill"></div>
+      </div>
+      <nav class="steps-nav" id="steps-nav" aria-label="Étapes du cadrage">
+        <button type="button" class="step-pill active" data-step="0">1. Cadrage</button>
+        <button type="button" class="step-pill" data-step="1">2. Demande &rarr; Visa</button>
+        <button type="button" class="step-pill" data-step="2">3. Paiements</button>
+        <button type="button" class="step-pill" data-step="3">4. Accueil &amp; Clientèle</button>
+        <button type="button" class="step-pill" data-step="4">5. Digital &amp; SI</button>
+        <button type="button" class="step-pill" data-step="5">6. Énergie, RH &amp; APDP</button>
+        <button type="button" class="step-pill" data-step="6">7. ASIN &amp; Pilote</button>
+        <button type="button" class="step-pill" data-step="7">8. Synthèse &amp; Export</button>
+      </nav>
+    </div>
+  </div>
+
+  <main class="container">
+    <details class="card" style="margin-bottom:1.35rem;border-left:3px solid var(--navy);">
+      <summary style="font-weight:700;color:var(--navy);cursor:pointer;">Référentiel officiel de la mission (Décret n° 2025-405 &bull; 5 Priorités 2026–2030 &bull; Mémo ASIN 2026 &bull; Mandat DG)</summary>
+      <div style="margin-top:0.85rem;font-size:0.88rem;color:var(--muted);">
+        <p style="margin-top:0;"><strong>Cadre statutaire :</strong> Décret n° 2025-405 du 16 juillet 2025 — <em>Agence de Contrôle des Installations électriques et de l'Efficacité énergétique (CONTRELEC)</em>, sous tutelle du MEEM (double mission : sécurité électrique + efficacité énergétique, 18 attributions, OHADA, CA de 7 membres).</p>
+        <p><strong>5 Priorités engageantes (Allocution 19 nov. 2026 &amp; Plan J1–J21) :</strong> (1) Accélérer/fiabiliser les contrôles (« zéro dossier oublié »), (2) Améliorer l'accueil et digitaliser en 3 paliers, (3) Capital humain/équipements/mobilité &amp; stages ANPE, (4) Nouvelles dimensions du contrôle (industrie, puissance, grandes infrastructures), (5) Efficacité énergétique (audits bâtiments publics &amp; gros consommateurs).</p>
+        <p style="margin-bottom:0;"><strong>Mandat Digital :</strong> État des lieux de la demande au paiement, visibilité digitale, systèmes intelligents d'interaction clientèle, reprise de l'historique ASIN 2025–2026 (spécifications 22 mai 2025, Compact numérique, suspension juin 2026) et ouverture d'une <strong>Agence Numérique Pilote Online</strong> avec téléconseillers délivrant un <strong>Visa Numérique Unique par Construction</strong> pour la SBEE.</p>
+      </div>
+    </details>
+
+    <form id="audit-form" novalidate>
+
+      <!-- ÉTAPE 1 : CADRAGE GÉNÉRAL & IDENTIFICATION -->
+      <section class="step-panel active" data-step="0">
+        <div class="step-header">
+          <span class="step-kicker">Étape 1 sur 8 &mdash; Cadrage de l'entretien</span>
+          <h2>Identification du répondant &amp; Périmètre de cadrage</h2>
+          <p style="margin:0;color:var(--muted);">Renseignez vos informations puis évaluez la maturité globale et les priorités. Sur chaque champ, vous pouvez saisir par écrit ou enregistrer une note vocale.</p>
+        </div>
+
+        <div class="card card-cadrage">
+          <h3>Coordonnées du répondant</h3>
+          <div class="grid-2">
+            <div class="form-group">
+              <label for="id_nom">Nom et prénoms *</label>
+              <input id="id_nom" name="id_nom" type="text" placeholder="Ex. Nom complet" required>
+            </div>
+            <div class="form-group">
+              <label for="id_fonction">Fonction / Poste *</label>
+              <input id="id_fonction" name="id_fonction" type="text" placeholder="Ex. Directeur Technique, Chef Service Caisse..." required>
+            </div>
+            <div class="form-group">
+              <label for="id_pole">Direction / Pôle concerné *</label>
+              <select id="id_pole" name="id_pole">
+                <option value="Direction Technique / Contrôle">Direction Technique / Contrôle</option>
+                <option value="DAF / Caisse & Paiements">DAF / Caisse &amp; Paiements</option>
+                <option value="Front Office / Accueil & Antennes">Front Office / Accueil &amp; Antennes</option>
+                <option value="DSI / Informatique & Communication">DSI / Informatique &amp; Communication</option>
+                <option value="ASIN / Présidence / SBEE">ASIN / Présidence / SBEE</option>
+                <option value="Direction Générale / DC">Direction Générale / DC</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="id_date">Date</label>
+              <input id="id_date" name="id_date" type="date">
+            </div>
+            <div class="form-group">
+              <label for="id_tel">Téléphone (format national 10 chiffres)</label>
+              <input id="id_tel" name="id_tel" type="tel" placeholder="Ex. 01 97 XX XX XX">
+            </div>
+            <div class="form-group">
+              <label for="id_email">Adresse e-mail professionnelle</label>
+              <input id="id_email" name="id_email" type="email" placeholder="prenom.nom@contrelec.bj">
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Évaluation initiale de cadrage (Maturité &amp; Priorité)</h3>
+          <div class="grid-3">
+            <div class="form-group">
+              <label for="cad_maturite">Niveau actuel de numérisation</label>
+              <select id="cad_maturite" name="cad_maturite">
+                <option value="Niveau 1 — 100 % Papier / Manuel">Niveau 1 — 100 % Papier / Manuel</option>
+                <option value="Niveau 2 — Partiel (Excel / Word / E-mail)">Niveau 2 — Partiel (Excel / Word / E-mail)</option>
+                <option value="Niveau 3 — Outil métier partiellement déployé">Niveau 3 — Outil métier partiellement déployé</option>
+                <option value="Niveau 4 — Dématérialisé bout en bout">Niveau 4 — Dématérialisé bout en bout</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="cad_priorite">Urgence de traitement sur votre pôle</label>
+              <select id="cad_priorite" name="cad_priorite">
+                <option value="Critique (Immédiat J1–J15)">Critique (Immédiat J1–J15)</option>
+                <option value="Haute (Palier 1 — J15–J30)">Haute (Palier 1 — J15–J30)</option>
+                <option value="Moyenne (Palier 2 — 1 à 3 mois)">Moyenne (Palier 2 — 1 à 3 mois)</option>
+                <option value="Structurante (Palier 3 — 6 à 24 mois)">Structurante (Palier 3 — 6 à 24 mois)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="cad_delai_cible">Délai cible recommandé (jours ouvrés)</label>
+              <input id="cad_delai_cible" name="cad_delai_cible" type="number" min="1" placeholder="Ex. 5">
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom:0;">
+            <label for="id_intro_note">Objectif prioritaire ou synthèse libre d'entrée</label>
+            <textarea id="id_intro_note" name="id_intro_note" placeholder="Exposez l'enjeu majeur de votre direction ou enregistrez une note vocale..."></textarea>
+            <div class="voice-toolbar" data-voice-key="etape1_intro" data-target="id_intro_note"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ÉTAPE 2 : PROCESSUS DEMANDE -> CONTRÔLE -> VISA -->
+      <section class="step-panel" data-step="1">
+        <div class="step-header">
+          <span class="step-kicker">Étape 2 sur 8 &mdash; Direction Technique / Contrôle</span>
+          <h2>Processus cœur de métier : Demande &rarr; Contrôle &rarr; Visa</h2>
+          <p style="margin:0;color:var(--muted);">Cartographie factuelle de l'existant, volumes, délais et points de blocage jusqu'à la SBEE.</p>
+        </div>
+
+        <div class="card card-cadrage">
+          <h3>Indicateurs chiffrés actuels</h3>
+          <div class="grid-3">
+            <div class="form-group" style="margin-bottom:0;">
+              <label for="dt_stock_total">Stock estimé de dossiers en attente</label>
+              <input id="dt_stock_total" name="dt_stock_total" type="text" placeholder="Ex. 120 dossiers">
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label for="dt_stock_30j">Dossiers de plus de 30 jours</label>
+              <input id="dt_stock_30j" name="dt_stock_30j" type="text" placeholder="Ex. 35 dossiers">
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label for="dt_delai_moyen">Délai moyen actuel (dépôt &rarr; visa)</label>
+              <input id="dt_delai_moyen" name="dt_delai_moyen" type="text" placeholder="Ex. 18 jours">
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="form-group">
+            <label for="q_dt_circuit">1. Circuit actuel détaillé d'une demande de contrôle (de la réception au visa)</label>
+            <textarea id="q_dt_circuit" name="q_dt_circuit" placeholder="Décrivez chaque étape, les intervenants et les supports utilisés..."></textarea>
+            <div class="voice-toolbar" data-voice-key="dt_circuit" data-target="q_dt_circuit"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="form-group">
+            <label for="q_dt_fiches">2. Standardisation des fiches de contrôle / rapports et 5 motifs les plus fréquents de non-conformité sur les nouvelles constructions</label>
+            <textarea id="q_dt_fiches" name="q_dt_fiches" placeholder="Existence d'un modèle unique + causes récurrentes de rejet..."></textarea>
+            <div class="voice-toolbar" data-voice-key="dt_fiches" data-target="q_dt_fiches"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="form-group" style="margin-bottom:0;">
+            <label for="q_dt_visa_sbee">3. Numérotation, signature, archivage du visa et interface actuelle avec la SBEE</label>
+            <textarea id="q_dt_visa_sbee" name="q_dt_visa_sbee" placeholder="Comment la SBEE vérifie-t-elle aujourd'hui l'authenticité d'un visa CONTRELEC ?"></textarea>
+            <div class="voice-toolbar" data-voice-key="dt_visa_sbee" data-target="q_dt_visa_sbee"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ÉTAPE 3 : PAIEMENTS & DAF -->
+      <section class="step-panel" data-step="2">
+        <div class="step-header">
+          <span class="step-kicker">Étape 3 sur 8 &mdash; DAF / Caisse</span>
+          <h2>Circuit des paiements &amp; Exigences de dématérialisation financière</h2>
+          <p style="margin:0;color:var(--muted);">Encaissements, rapprochement comptable et cadre réglementaire pour le paiement électronique agréé.</p>
+        </div>
+
+        <div class="card">
+          <div class="form-group">
+            <label for="q_daf_canaux">1. Canaux d'encaissement actuels (espèces, banque, Trésor, mobile money) et justificatifs remis</label>
+            <textarea id="q_daf_canaux" name="q_daf_canaux" placeholder="Détaillez les modes de paiement acceptés et le circuit des quittances..."></textarea>
+            <div class="voice-toolbar" data-voice-key="daf_canaux" data-target="q_daf_canaux"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="form-group">
+            <label for="q_daf_rapprochement">2. Délai et modalités de rapprochement entre le paiement et le dossier technique</label>
+            <textarea id="q_daf_rapprochement" name="q_daf_rapprochement" placeholder="Points de friction, délais de confirmation financière, risques d'erreurs..."></textarea>
+            <div class="voice-toolbar" data-voice-key="daf_rapprochement" data-target="q_daf_rapprochement"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="form-group" style="margin-bottom:0;">
+            <label for="q_daf_epaiement">3. Exigences OHADA / Trésor Public / MEF pour activer un paiement électronique via prestataire agréé</label>
+            <textarea id="q_daf_epaiement" name="q_daf_epaiement" placeholder="Comptes de reversement, agréments, réconciliation comptable..."></textarea>
+            <div class="voice-toolbar" data-voice-key="daf_epaiement" data-target="q_daf_epaiement"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ÉTAPE 4 : ACCUEIL, ANTENNES & INTERACTION CLIENTÈLE -->
+      <section class="step-panel" data-step="3">
+        <div class="step-header">
+          <span class="step-kicker">Étape 4 sur 8 &mdash; Front Office &amp; Antennes</span>
+          <h2>Accueil, Antennes départementales &amp; Systèmes d'interaction clientèle</h2>
+          <p style="margin:0;color:var(--muted);">Parcours au guichet, réclamations, couverture territoriale et canaux intelligents (téléconseillers, WhatsApp, SMS).</p>
+        </div>
+
+        <div class="card">
+          <div class="form-group">
+            <label for="q_fo_flux">1. Flux journalier au guichet, temps d'attente moyen et 5 questions les plus fréquentes des usagers</label>
+            <textarea id="q_fo_flux" name="q_fo_flux" placeholder="Volume de visites, attentes, difficultés rencontrées par les usagers et installateurs..."></textarea>
+            <div class="voice-toolbar" data-voice-key="fo_flux" data-target="q_fo_flux"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="form-group">
+            <label for="q_fo_reclamations">2. Gestion actuelle des réclamations et besoins en canaux intelligents (WhatsApp Business, SMS de suivi, centre d'appel, FAQ guidée)</label>
+            <textarea id="q_fo_reclamations" name="q_fo_reclamations" placeholder="Fonctionnement actuel du registre des plaintes et priorités de modernisation..."></textarea>
+            <div class="voice-toolbar" data-voice-key="fo_reclamations" data-target="q_fo_reclamations"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="form-group" style="margin-bottom:0;">
+            <label for="q_fo_antennes">3. Antennes départementales actives : adresses, téléphones (10 chiffres), connectivité internet et équipements</label>
+            <textarea id="q_fo_antennes" name="q_fo_antennes" placeholder="Listez chaque antenne et son état opérationnel..."></textarea>
+            <div class="voice-toolbar" data-voice-key="fo_antennes" data-target="q_fo_antennes"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ÉTAPE 5 : VISIBILITÉ DIGITALE, SITE WEB, RÉSEAUX SOCIAUX & SI -->
+      <section class="step-panel" data-step="4">
+        <div class="step-header">
+          <span class="step-kicker">Étape 5 sur 8 &mdash; DSI &amp; Communication</span>
+          <h2>Canaux de visibilité digitale, Site web, Réseaux sociaux &amp; SI interne</h2>
+          <p style="margin:0;color:var(--muted);">Audit des outils internes, du nom de domaine, de la messagerie et des comptes officiels.</p>
+        </div>
+
+        <div class="card">
+          <div class="form-group">
+            <label for="q_si_outils">1. Logiciels, bases de données, tableurs Excel, serveurs et sauvegardes utilisés actuellement</label>
+            <textarea id="q_si_outils" name="q_si_outils" placeholder="Inventaire technique existant et vulnérabilités constatées..."></textarea>
+            <div class="voice-toolbar" data-voice-key="si_outils" data-target="q_si_outils"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="form-group">
+            <label for="q_si_domaine">2. Statut du site web, du nom de domaine (contrelec.bj), de l'hébergement et des e-mails professionnels (détenteurs des accès)</label>
+            <textarea id="q_si_domaine" name="q_si_domaine" placeholder="Qui gère le domaine, l'hébergement et la messagerie ?"></textarea>
+            <div class="voice-toolbar" data-voice-key="si_domaine" data-target="q_si_domaine"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="form-group" style="margin-bottom:0;">
+            <label for="q_si_reseaux">3. Inventaire des comptes réseaux sociaux existants (Facebook, LinkedIn, X, YouTube, WhatsApp) et droits d'administration</label>
+            <textarea id="q_si_reseaux" name="q_si_reseaux" placeholder="Comptes actifs/inactifs, accès administrateurs, besoin de community management..."></textarea>
+            <div class="voice-toolbar" data-voice-key="si_reseaux" data-target="q_si_reseaux"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ÉTAPE 6 : NOUVELLES DIMENSIONS, EFFICACITÉ ÉNERGÉTIQUE, CAPITAL HUMAIN & CONFORMITÉ -->
+      <section class="step-panel" data-step="5">
+        <div class="step-header">
+          <span class="step-kicker">Étape 6 sur 8 &mdash; Décret n° 2025-405 &amp; Plan d'Action J1–J21</span>
+          <h2>Nouvelles dimensions, Efficacité énergétique, Capital humain &amp; Conformité</h2>
+          <p style="margin:0;color:var(--muted);">Couverture complète des axes 3, 4 et 5 du Plan d'action ainsi que des exigences légales (APDP / ANSSI-Bénin).</p>
+        </div>
+
+        <div class="card">
+          <div class="form-group">
+            <label for="q_nd_industrie">1. Nouvelles dimensions du contrôle (installations industrielles, puissance, permis de construire, production &le; 500 kVA, agréments cabinets) : quels besoins numériques et référentiels ?</label>
+            <textarea id="q_nd_industrie" name="q_nd_industrie" placeholder="Catégories d'ouvrages pilotes, suivi des personnes agréées, contrôle qualité..."></textarea>
+            <div class="voice-toolbar" data-voice-key="nd_industrie" data-target="q_nd_industrie"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="form-group">
+            <label for="q_ee_audits">2. Efficacité énergétique (audits bâtiments publics, gros consommateurs, AMOP, baseline kWh / FCFA) : quelles données collecter et publier ?</label>
+            <textarea id="q_ee_audits" name="q_ee_audits" placeholder="Programme pilote d'audits, kit de sensibilisation, suivi des économies d'énergie..."></textarea>
+            <div class="voice-toolbar" data-voice-key="ee_audits" data-target="q_ee_audits"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="form-group">
+            <label for="q_rh_anpe">3. Capital humain, équipements, mobilité et mobilisation ANPE (stages rémunérés) : quels profils déployer en priorité pour la digitalisation et les téléconseillers ?</label>
+            <textarea id="q_rh_anpe" name="q_rh_anpe" placeholder="Besoins en compétences, équipements critiques, formations agents et installateurs..."></textarea>
+            <div class="voice-toolbar" data-voice-key="rh_anpe" data-target="q_rh_anpe"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="form-group" style="margin-bottom:0;">
+            <label for="q_conf_apdp">4. Conformité juridique, APDP (Code du numérique Livre V), cybersécurité et arbitrages attendus du Ministre (MEEM) :</label>
+            <textarea id="q_conf_apdp" name="q_conf_apdp" placeholder="Déclaration APDP, hébergement souverain, décisions ministérielles prioritaires..."></textarea>
+            <div class="voice-toolbar" data-voice-key="conf_apdp" data-target="q_conf_apdp"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ÉTAPE 7 : HISTORIQUE ASIN, RISQUES & AGENCE NUMÉRIQUE PILOTE -->
+      <section class="step-panel" data-step="6">
+        <div class="step-header">
+          <span class="step-kicker">Étape 7 sur 8 &mdash; ASIN / SBEE / Cadrage du Pilote</span>
+          <h2>Reprise des acquis ASIN, Risques &amp; Agence Numérique Pilote Online</h2>
+          <p style="margin:0;color:var(--muted);">Capitalisation 2025–2026, dépendances institutionnelles et conditions de réussite du Visa Numérique Unique.</p>
+        </div>
+
+        <div class="card">
+          <div class="form-group">
+            <label for="q_asin_poc">1. État exact du POC / développements ASIN 2025, réutilisabilité des spécifications du 22 mai 2025 et causes de la suspension de juin 2026</label>
+            <textarea id="q_asin_poc" name="q_asin_poc" placeholder="Livrables récupérables, raisons de l'arrêt, interlocuteurs techniques..."></textarea>
+            <div class="voice-toolbar" data-voice-key="asin_poc" data-target="q_asin_poc"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="form-group">
+            <label for="q_asin_sbee">2. Prérequis d'interopérabilité SBEE (Visa Numérique Unique par Construction), NPI, X-Road et passerelle de paiement</label>
+            <textarea id="q_asin_sbee" name="q_asin_sbee" placeholder="Exigences techniques et organisationnelles pour reconnaître le visa numérique à la SBEE..."></textarea>
+            <div class="voice-toolbar" data-voice-key="asin_sbee" data-target="q_asin_sbee"></div>
+          </div>
+        </div>
+
+        <div class="card card-cadrage">
+          <h3>Dépendances &amp; Risques majeurs à arbitrer (cocher les éléments applicables)</h3>
+          <div class="check-grid">
+            <label class="check-item"><input type="checkbox" name="dep_list" value="Validation ministérielle (MEEM)"> Validation ministérielle (MEEM)</label>
+            <label class="check-item"><input type="checkbox" name="dep_list" value="Reprise technique avec le nouveau DG ASIN"> Reprise technique avec le nouveau DG ASIN</label>
+            <label class="check-item"><input type="checkbox" name="dep_list" value="Accord d'interconnexion SBEE (Visa Numérique Unique)"> Accord d'interconnexion SBEE (Visa Numérique Unique)</label>
+            <label class="check-item"><input type="checkbox" name="dep_list" value="Homologation paiement électronique (Trésor / OHADA)"> Homologation paiement électronique (Trésor / OHADA)</label>
+            <label class="check-item"><input type="checkbox" name="dep_list" value="Déclaration de conformité APDP (Code du numérique)"> Déclaration de conformité APDP (Code du numérique)</label>
+            <label class="check-item"><input type="checkbox" name="dep_list" value="Mobilisation RH / Téléconseillers (stages ANPE)"> Mobilisation RH / Téléconseillers (stages ANPE)</label>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Documents de preuve / pièces disponibles sur votre pôle</h3>
+          <div class="check-grid">
+            <label class="check-item"><input type="checkbox" name="doc_list" value="Fiche de contrôle / modèle de rapport"> Fiche de contrôle / modèle de rapport</label>
+            <label class="check-item"><input type="checkbox" name="doc_list" value="Grille tarifaire officielle"> Grille tarifaire officielle</label>
+            <label class="check-item"><input type="checkbox" name="doc_list" value="Spécifications fonctionnelles ASIN (22 mai 2025)"> Spécifications fonctionnelles ASIN (22 mai 2025)</label>
+            <label class="check-item"><input type="checkbox" name="doc_list" value="Accès domaine contrelec.bj / réseaux sociaux"> Accès domaine contrelec.bj / réseaux sociaux</label>
+            <label class="check-item"><input type="checkbox" name="doc_list" value="Organigramme validé / liste des antennes"> Organigramme validé / liste des antennes</label>
+            <label class="check-item"><input type="checkbox" name="doc_list" value="Statistiques récentes de dossiers / délais"> Statistiques récentes de dossiers / délais</label>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="form-group" style="margin-bottom:0;">
+            <label for="q_pilote_attentes">3. Recommandations clés pour réussir l'ouverture de l'Agence Numérique Pilote Online (nouvelles constructions + téléconseillers)</label>
+            <textarea id="q_pilote_attentes" name="q_pilote_attentes" placeholder="Conditions de succès, quick wins immédiats, points d'attention..."></textarea>
+            <div class="voice-toolbar" data-voice-key="pilote_attentes" data-target="q_pilote_attentes"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ÉTAPE 8 : SYNTHÈSE DE CADRAGE & EXPORT -->
+      <section class="step-panel" data-step="7">
+        <div class="step-header">
+          <span class="step-kicker">Étape 8 sur 8 &mdash; Restitution &amp; Transmission</span>
+          <h2>Synthèse de Cadrage &amp; Transmission du Dossier</h2>
+          <p style="margin:0;color:var(--muted);">Vérifiez la fiche de cadrage consolidée et vos notes vocales avant export et envoi.</p>
+        </div>
+
+        <div class="alert">
+          <strong>Procédure de transmission :</strong><br>
+          1. Cliquez sur <strong>Télécharger le dossier complet (JSON + Vocaux)</strong> pour générer un fichier unique contenant toutes vos réponses structurées et vos enregistrements audio.<br>
+          2. Transmettez ce fichier par <strong>WhatsApp</strong> ou <strong>E-mail</strong> à l'équipe en charge de la mission de digitalisation CONTRELEC.
+        </div>
+
+        <div class="card card-cadrage">
+          <h3>Export et partage</h3>
+          <div class="export-actions">
+            <button type="button" id="btn-export-json" class="btn btn-primary">Télécharger le dossier complet (JSON + Vocaux)</button>
+            <button type="button" id="btn-export-md" class="btn btn-accent">Télécharger la fiche de cadrage (.md)</button>
+            <button type="button" id="btn-copy-wa" class="btn btn-outline">Copier la synthèse texte</button>
+            <button type="button" id="btn-print" class="btn btn-outline">Imprimer / Enregistrer en PDF</button>
+            <button type="button" id="btn-reset-all" class="btn btn-danger btn-sm" style="margin-left:auto;">Réinitialiser</button>
+          </div>
+          <p id="export-feedback" style="font-size:0.86rem;color:var(--green);font-weight:600;margin:0.75rem 0 0;"></p>
+        </div>
+
+        <div id="summary-container"></div>
+      </section>
+
+      <div class="step-footer">
+        <button type="button" id="btn-prev" class="btn btn-outline">&larr; Étape précédente</button>
+        <span id="step-indicator" style="font-size:0.85rem;font-weight:600;color:var(--muted);">Étape 1 / 8</span>
+        <button type="button" id="btn-next" class="btn btn-primary">Étape suivante &rarr;</button>
+      </div>
+    </form>
+  </main>
+
+  <script>
+    (function () {
+      "use strict";
+
+      const STORAGE_KEY = "contrelec_cadrage_form_v2";
+      const form = document.getElementById("audit-form");
+      const panels = Array.from(document.querySelectorAll(".step-panel"));
+      const pills = Array.from(document.querySelectorAll(".step-pill"));
+      const btnPrev = document.getElementById("btn-prev");
+      const btnNext = document.getElementById("btn-next");
+      const progressFill = document.getElementById("progress-fill");
+      const stepIndicator = document.getElementById("step-indicator");
+      const saveStatus = document.getElementById("save-status");
+
+      const ICON_MIC = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 19v3M8 22h8" stroke-linecap="round"/></svg>';
+      const ICON_STOP = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="1"/></svg>';
+      const ICON_TEXT = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M4 12h12M4 17h8" stroke-linecap="round"/></svg>';
+
+      let currentStep = 0;
+      const voiceNotes = {};
+      let activeRecorder = null;
+      let activeKey = null;
+      let recChunks = [];
+      let recStart = 0;
+      let recTimerInterval = null;
+
+      const dateField = document.getElementById("id_date");
+      if (dateField && !dateField.value) {
+        dateField.value = new Date().toISOString().slice(0, 10);
+      }
+
+      // 1. Sauvegarde / Restauration locale
+      function loadSavedFields() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return;
+          const data = JSON.parse(raw);
+          Object.keys(data.fields || {}).forEach(function (name) {
+            const el = form.elements[name];
+            if (el && el.type !== "checkbox" && typeof data.fields[name] === "string") {
+              el.value = data.fields[name];
+            }
+          });
+          ["dep_list", "doc_list"].forEach(function (group) {
+            const checkedVals = data[group] || [];
+            form.querySelectorAll('input[name="' + group + '"]').forEach(function (cb) {
+              cb.checked = checkedVals.includes(cb.value);
+            });
+          });
+        } catch (_) {}
+      }
+
+      function saveFields() {
+        const payload = { fields: {}, dep_list: [], doc_list: [] };
+        Array.from(form.elements).forEach(function (el) {
+          if (!el.name) return;
+          if (el.type === "checkbox") {
+            if (el.checked && payload[el.name]) payload[el.name].push(el.value);
+          } else {
+            payload.fields[el.name] = el.value;
+          }
+        });
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+          saveStatus.textContent = "Enregistré (" + new Date().toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }) + ")";
+        } catch (_) {}
+      }
+
+      form.addEventListener("input", saveFields);
+      form.addEventListener("change", saveFields);
+      loadSavedFields();
+
+      // 2. Navigation multi-étapes
+      function goToStep(index) {
+        currentStep = Math.max(0, Math.min(panels.length - 1, index));
+        panels.forEach(function (p, i) { p.classList.toggle("active", i === currentStep); });
+        pills.forEach(function (pill, i) {
+          pill.classList.toggle("active", i === currentStep);
+          pill.classList.toggle("done", i < currentStep);
+        });
+        progressFill.style.width = Math.round(((currentStep + 1) / panels.length) * 100) + "%";
+        stepIndicator.textContent = "Étape " + (currentStep + 1) + " / " + panels.length;
+        btnPrev.style.visibility = currentStep === 0 ? "hidden" : "visible";
+        btnNext.style.display = currentStep === panels.length - 1 ? "none" : "inline-flex";
+        if (currentStep === panels.length - 1) renderSummary();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      btnPrev.addEventListener("click", function () { goToStep(currentStep - 1); });
+      btnNext.addEventListener("click", function () { goToStep(currentStep + 1); });
+      pills.forEach(function (pill) {
+        pill.addEventListener("click", function () {
+          goToStep(parseInt(pill.getAttribute("data-step"), 10));
+        });
+      });
+
+      // 3. Notes vocales & Dictée vocale FR (zéro émoticône)
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+      document.querySelectorAll(".voice-toolbar").forEach(function (bar) {
+        const key = bar.getAttribute("data-voice-key");
+        const targetId = bar.getAttribute("data-target");
+        voiceNotes[key] = [];
+
+        const recBtn = document.createElement("button");
+        recBtn.type = "button";
+        recBtn.className = "btn btn-outline btn-sm btn-rec";
+        recBtn.innerHTML = ICON_MIC + "<span>Enregistrer une note vocale</span>";
+
+        const timerSpan = document.createElement("span");
+        timerSpan.className = "rec-timer";
+        timerSpan.textContent = "00:00";
+
+        bar.appendChild(recBtn);
+        bar.appendChild(timerSpan);
+
+        if (SpeechRecognition && targetId) {
+          const dictBtn = document.createElement("button");
+          dictBtn.type = "button";
+          dictBtn.className = "btn btn-outline btn-sm";
+          dictBtn.innerHTML = ICON_TEXT + "<span>Dicter en texte (FR)</span>";
+          let recognizing = false;
+          let recognition = null;
+
+          dictBtn.addEventListener("click", function () {
+            if (recognizing && recognition) {
+              recognition.stop();
+              return;
+            }
+            recognition = new SpeechRecognition();
+            recognition.lang = "fr-FR";
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            recognizing = true;
+            dictBtn.innerHTML = ICON_STOP + "<span>Écoute en cours (arrêter)</span>";
+            recognition.onresult = function (evt) {
+              const transcript = evt.results[0][0].transcript;
+              const area = document.getElementById(targetId);
+              if (area) {
+                area.value = (area.value ? area.value + " " : "") + transcript;
+                saveFields();
+              }
+            };
+            recognition.onend = function () {
+              recognizing = false;
+              dictBtn.innerHTML = ICON_TEXT + "<span>Dicter en texte (FR)</span>";
+            };
+            recognition.onerror = function () {
+              recognizing = false;
+              dictBtn.innerHTML = ICON_TEXT + "<span>Dicter en texte (FR)</span>";
+            };
+            recognition.start();
+          });
+          bar.appendChild(dictBtn);
+        }
+
+        const listDiv = document.createElement("div");
+        listDiv.className = "audio-list";
+        listDiv.id = "audio-list-" + key;
+        bar.appendChild(listDiv);
+
+        recBtn.addEventListener("click", async function () {
+          if (activeRecorder && activeRecorder.state === "recording") {
+            const wasSame = activeKey === key;
+            activeRecorder.stop();
+            if (wasSame) return;
+          }
+          if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            alert("L'enregistrement vocal n'est pas supporté par ce navigateur. Utilisez Chrome, Edge ou Safari récent.");
+            return;
+          }
+          try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            const mime = MediaRecorder.isTypeSupported("audio/webm")
+              ? "audio/webm"
+              : (MediaRecorder.isTypeSupported("audio/mp4") ? "audio/mp4" : "");
+            activeRecorder = mime ? new MediaRecorder(stream, { mimeType: mime }) : new MediaRecorder(stream);
+            activeKey = key;
+            recChunks = [];
+            recStart = Date.now();
+
+            recBtn.classList.add("recording");
+            recBtn.innerHTML = ICON_STOP + "<span>Arrêter l'enregistrement</span>";
+            timerSpan.classList.add("active");
+            timerSpan.textContent = "00:00";
+
+            recTimerInterval = setInterval(function () {
+              const sec = Math.floor((Date.now() - recStart) / 1000);
+              timerSpan.textContent = String(Math.floor(sec / 60)).padStart(2, "0") + ":" + String(sec % 60).padStart(2, "0");
+            }, 300);
+
+            activeRecorder.ondataavailable = function (e) {
+              if (e.data && e.data.size > 0) recChunks.push(e.data);
+            };
+
+            activeRecorder.onstop = function () {
+              clearInterval(recTimerInterval);
+              recBtn.classList.remove("recording");
+              recBtn.innerHTML = ICON_MIC + "<span>Enregistrer une note vocale</span>";
+              timerSpan.classList.remove("active");
+              stream.getTracks().forEach(function (t) { t.stop(); });
+
+              const durationSec = Math.max(1, Math.round((Date.now() - recStart) / 1000));
+              const blob = new Blob(recChunks, { type: activeRecorder.mimeType || "audio/webm" });
+              const reader = new FileReader();
+              reader.onloadend = function () {
+                voiceNotes[key].push({
+                  id: "voc_" + Date.now(),
+                  dataUrl: reader.result,
+                  mimeType: blob.type || "audio/webm",
+                  durationSec: durationSec,
+                  createdAt: new Date().toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })
+                });
+                renderAudioList(key);
+              };
+              reader.readAsDataURL(blob);
+            };
+
+            activeRecorder.start();
+          } catch (err) {
+            alert("Accès au microphone refusé ou indisponible. Vérifiez les permissions micro de votre navigateur.");
+          }
+        });
+      });
+
+      function renderAudioList(key) {
+        const container = document.getElementById("audio-list-" + key);
+        if (!container) return;
+        container.innerHTML = "";
+        (voiceNotes[key] || []).forEach(function (note, idx) {
+          const item = document.createElement("div");
+          item.className = "audio-item";
+
+          const meta = document.createElement("span");
+          meta.className = "audio-meta";
+          meta.textContent = "Note vocale " + (idx + 1) + " (" + note.durationSec + " s)";
+
+          const audio = document.createElement("audio");
+          audio.controls = true;
+          audio.src = note.dataUrl;
+
+          const dl = document.createElement("a");
+          dl.href = note.dataUrl;
+          dl.download = "CONTRELEC_" + key + "_vocal_" + (idx + 1) + (note.mimeType.includes("mp4") ? ".m4a" : ".webm");
+          dl.className = "btn btn-outline btn-sm";
+          dl.textContent = "Télécharger";
+
+          const del = document.createElement("button");
+          del.type = "button";
+          del.className = "btn btn-outline btn-sm";
+          del.textContent = "Supprimer";
+          del.addEventListener("click", function () {
+            voiceNotes[key] = voiceNotes[key].filter(function (n) { return n.id !== note.id; });
+            renderAudioList(key);
+          });
+
+          item.appendChild(meta);
+          item.appendChild(audio);
+          item.appendChild(dl);
+          item.appendChild(del);
+          container.appendChild(item);
+        });
+      }
+
+      // 4. Collecte & Synthèse de cadrage
+      function getCheckedValues(name) {
+        return Array.from(form.querySelectorAll('input[name="' + name + '"]:checked')).map(function (cb) {
+          return cb.value;
+        });
+      }
+
+      function collectPayload() {
+        const answers = {};
+        const labeled = [];
+        Array.from(form.elements).forEach(function (el) {
+          if (!el.name || el.type === "checkbox") return;
+          answers[el.name] = el.value.trim();
+          const labelEl = form.querySelector('label[for="' + el.id + '"]');
+          labeled.push({
+            field: el.name,
+            label: labelEl ? labelEl.textContent.trim() : el.name,
+            value: el.value.trim()
+          });
+        });
+
+        let totalVoices = 0;
+        Object.keys(voiceNotes).forEach(function (k) { totalVoices += voiceNotes[k].length; });
+
+        return {
+          meta: {
+            document: "CONTRELEC Bénin — Dossier de Cadrage & État des Lieux Digitalisation",
+            lead: "Rejuste",
+            supervision_aq: "DC",
+            exported_at: new Date().toISOString(),
+            total_voice_notes: totalVoices
+          },
+          cadrage: {
+            pole: answers.id_pole || "",
+            maturite: answers.cad_maturite || "",
+            priorite: answers.cad_priorite || "",
+            delai_cible_jours: answers.cad_delai_cible || "",
+            dependances_risques: getCheckedValues("dep_list"),
+            pieces_disponibles: getCheckedValues("doc_list")
+          },
+          answers: answers,
+          labeled_answers: labeled,
+          voice_notes: voiceNotes
+        };
+      }
+
+      function escapeHtml(str) {
+        return String(str).replace(/[&<>"']/g, function (m) {
+          return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m];
+        });
+      }
+
+      function renderSummary() {
+        const container = document.getElementById("summary-container");
+        const p = collectPayload();
+        let html = '<div class="kpi-grid">'
+          + '<div class="kpi-box"><div class="kpi-label">Pôle audité</div><div class="kpi-val">' + escapeHtml(p.cadrage.pole || "Non précisé") + '</div></div>'
+          + '<div class="kpi-box"><div class="kpi-label">Maturité actuelle</div><div class="kpi-val">' + escapeHtml(p.cadrage.maturite || "—") + '</div></div>'
+          + '<div class="kpi-box"><div class="kpi-label">Urgence / Priorité</div><div class="kpi-val">' + escapeHtml(p.cadrage.priorite || "—") + '</div></div>'
+          + '<div class="kpi-box"><div class="kpi-label">Notes vocales</div><div class="kpi-val">' + p.meta.total_voice_notes + ' enregistrement(s)</div></div>'
+          + '</div>';
+
+        if (p.cadrage.dependances_risques.length || p.cadrage.pieces_disponibles.length) {
+          html += '<div class="summary-block"><h3>Cadrage des dépendances &amp; pièces</h3>';
+          if (p.cadrage.dependances_risques.length) {
+            html += '<div class="summary-item"><div class="summary-q">Dépendances &amp; risques à arbitrer</div><div class="summary-a">- ' + p.cadrage.dependances_risques.map(escapeHtml).join("\n- ") + '</div></div>';
+          }
+          if (p.cadrage.pieces_disponibles.length) {
+            html += '<div class="summary-item"><div class="summary-q">Documents de preuve disponibles</div><div class="summary-a">- ' + p.cadrage.pieces_disponibles.map(escapeHtml).join("\n- ") + '</div></div>';
+          }
+          html += '</div>';
+        }
+
+        html += '<div class="summary-block"><h3>Réponses détaillées</h3>';
+        p.labeled_answers.forEach(function (row) {
+          if (!row.value) return;
+          html += '<div class="summary-item"><div class="summary-q">' + escapeHtml(row.label) + '</div><div class="summary-a">' + escapeHtml(row.value) + '</div></div>';
+        });
+        html += '</div>';
+
+        if (p.meta.total_voice_notes > 0) {
+          html += '<div class="summary-block"><h3>Notes vocales enregistrées</h3>';
+          Object.keys(voiceNotes).forEach(function (k) {
+            voiceNotes[k].forEach(function (n, i) {
+              html += '<div class="audio-item" style="margin-bottom:0.5rem;"><span class="audio-meta">' + escapeHtml(k) + ' — Note ' + (i + 1) + ' (' + n.durationSec + ' s)</span><audio controls src="' + n.dataUrl + '"></audio></div>';
+            });
+          });
+          html += '</div>';
+        }
+        container.innerHTML = html;
+      }
+
+      function buildMarkdownReport(p) {
+        const lines = [
+          "# Fiche de Cadrage & État des Lieux — Digitalisation CONTRELEC Bénin",
+          "",
+          "- **Date d'export :** " + new Date().toLocaleString("fr-FR"),
+          "- **Pôle audité :** " + (p.cadrage.pole || "Non précisé"),
+          "- **Maturité actuelle :** " + (p.cadrage.maturite || "Non précisée"),
+          "- **Priorité :** " + (p.cadrage.priorite || "Non précisée"),
+          "- **Délai cible recommandé :** " + (p.cadrage.delai_cible_jours ? p.cadrage.delai_cible_jours + " jours ouvrés" : "Non précisé"),
+          "- **Notes vocales jointes (dans le JSON) :** " + p.meta.total_voice_notes,
+          ""
+        ];
+        if (p.cadrage.dependances_risques.length) {
+          lines.push("## Dépendances & Risques identifiés");
+          p.cadrage.dependances_risques.forEach(function (d) { lines.push("- " + d); });
+          lines.push("");
+        }
+        if (p.cadrage.pieces_disponibles.length) {
+          lines.push("## Documents de preuve disponibles");
+          p.cadrage.pieces_disponibles.forEach(function (d) { lines.push("- " + d); });
+          lines.push("");
+        }
+        lines.push("## Réponses détaillées");
+        lines.push("");
+        p.labeled_answers.forEach(function (row) {
+          if (row.value) {
+            lines.push("### " + row.label);
+            lines.push(row.value);
+            lines.push("");
+          }
+        });
+        return lines.join("\n");
+      }
+
+      function downloadFile(filename, content, mime) {
+        const blob = new Blob([content], { type: mime });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+      }
+
+      const feedback = document.getElementById("export-feedback");
+
+      document.getElementById("btn-export-json").addEventListener("click", function () {
+        const payload = collectPayload();
+        const slug = (payload.answers.id_nom || "repondant").toLowerCase().replace(/[^a-z0-9]+/g, "_");
+        downloadFile(
+          "CONTRELEC_Cadrage_" + slug + "_" + new Date().toISOString().slice(0, 10) + ".json",
+          JSON.stringify(payload, null, 2),
+          "application/json;charset=utf-8"
+        );
+        feedback.textContent = "Dossier complet (.json avec notes vocales) téléchargé. Vous pouvez le transmettre par WhatsApp ou E-mail.";
+      });
+
+      document.getElementById("btn-export-md").addEventListener("click", function () {
+        const payload = collectPayload();
+        const slug = (payload.answers.id_nom || "repondant").toLowerCase().replace(/[^a-z0-9]+/g, "_");
+        downloadFile(
+          "CONTRELEC_Cadrage_" + slug + ".md",
+          buildMarkdownReport(payload),
+          "text/markdown;charset=utf-8"
+        );
+        feedback.textContent = "Fiche de cadrage Markdown (.md) téléchargée.";
+      });
+
+      document.getElementById("btn-copy-wa").addEventListener("click", async function () {
+        const text = buildMarkdownReport(collectPayload());
+        try {
+          await navigator.clipboard.writeText(text);
+          feedback.textContent = "Synthèse copiée dans le presse-papiers.";
+        } catch (_) {
+          feedback.textContent = "Utilisez le bouton Télécharger (.md) pour partager la synthèse.";
+        }
+      });
+
+      document.getElementById("btn-print").addEventListener("click", function () { window.print(); });
+
+      document.getElementById("btn-reset-all").addEventListener("click", function () {
+        if (!confirm("Effacer toutes les réponses et notes vocales de ce dossier ?")) return;
+        localStorage.removeItem(STORAGE_KEY);
+        form.reset();
+        Object.keys(voiceNotes).forEach(function (k) {
+          voiceNotes[k] = [];
+          renderAudioList(k);
+        });
+        goToStep(0);
+      });
+
+      goToStep(0);
+    })();
+  </script>
+</body>
+</html>
